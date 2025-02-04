@@ -394,7 +394,7 @@ class MainTodayContentView: UIView {
         hourlyCollection.delegate = self
         hourlyCollection.dataSource = self
         
-        hourlyCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        hourlyCollection.register(WeatherCollectionViewCell.self, forCellWithReuseIdentifier: "WeatherCell")
         
         addSubview(hourlyCollection)
         
@@ -432,54 +432,90 @@ extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        
-        let item = indexPath.item == 0 ? "Now" : hourlyTimeList[indexPath.item]
-        
-        let title = UILabel()
-        title.text = item
-        
-        title.font = .systemFont(ofSize: 24, weight: .bold)
-        
-        
-        let lottie = LottieAnimationView()
-        Task {
-            await lottie.loadAnimation(from: try .named("thunderstorm"))
-            lottie.loopMode = .loop
-            lottie.play()
-            
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as? WeatherCollectionViewCell else {
+            fatalError("Could not dequeue WeatherCollectionViewCell")
         }
+
+        let item = indexPath.item == 0 ? "Now" : hourlyTimeList[indexPath.item]
+        cell.configure(with: item)
         
-        let desc = UILabel()
-        desc.text = "Thunderstorm and Rain"
+        return cell
+    }
+}
+
+class WeatherCollectionViewCell: UICollectionViewCell {
+    
+    private let title: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let lottie: LottieAnimationView = {
+        let animationView = LottieAnimationView()
+        animationView.loopMode = .loop
+        return animationView
+    }()
+    
+    private let desc: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.preferredMaxLayoutWidth = 100
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        desc.font = .systemFont(ofSize: 16, weight: .medium)
-        desc.numberOfLines = 2
-        desc.textAlignment = .center
-        desc.preferredMaxLayoutWidth = 100
+        contentView.addSubviews(title, lottie, desc)
         
-        cell.contentView.addSubviews(title, lottie, desc)
         title.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.centerX.equalToSuperview()
         }
-        
+
         lottie.snp.makeConstraints { make in
             make.top.equalTo(title.snp.bottom)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(100)
         }
-        
+                
         desc.snp.makeConstraints { make in
             make.top.equalTo(lottie.snp.bottom).offset(16)
             make.bottom.equalToSuperview().inset(8)
             make.centerX.equalToSuperview()
         }
-
         
-        cell.backgroundColor = .systemFill
-        return cell
+        backgroundColor = .systemFill
+        
+        Task {
+            await lottie.loadAnimation(from: try .named("thunderstorm"))
+        }
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(with item: String) {
+        title.text = item
+        desc.text = "Thunderstorm and Rain"
+        
+        if (!lottie.isAnimationPlaying) {
+            lottie.play()
+        }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        if !lottie.isAnimationPlaying {
+            lottie.play()
+        }
+    }
+
 }
 
 @available(iOS 17, *)
