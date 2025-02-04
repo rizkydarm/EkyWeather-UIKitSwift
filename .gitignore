@@ -1,0 +1,39 @@
+# Xcode
+.DS_Store
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+.idea/
+*.hmap
+*.ipa
+*.xcuserstate
+
+# CocoaPods
+Pods/
+Pods/Target Support Files/*
+Podfile.lock
+
+# Swift Package Manager
+.build/
+Package.resolved
+
+xcshareddata/WorkspaceSettings.xcsettings
+
+# AppCode
+.idea/
+
+# Other
+*.swp
+*.lock
+*.xcscmblueprint
+
