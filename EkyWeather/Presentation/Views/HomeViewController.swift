@@ -47,11 +47,9 @@ class HomeViewController: UIViewController {
     
     private lazy var tempLabel = {
         let label = UILabel()
-        label.text = "*C"
         return label
     }()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -99,11 +97,11 @@ class HomeViewController: UIViewController {
         placeButton.titleLabel?.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 40, minimumFontSize: 32), weight: .bold)
         placeButton.setTitleColor(.label, for: .normal)
         todayDateLabel.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 20, minimumFontSize: 16), weight: .medium)
-        tempLabel.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 40, minimumFontSize: 32), weight: .bold)
+        tempLabel.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 24, minimumFontSize: 16), weight: .bold)
         
         boxBackground.addSubviews(lottieView, placeButton, todayDateLabel, tempLabel)
         placeButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
+            make.top.equalTo(view.safeAreaLayoutGuide)
             make.left.equalToSuperview().offset(20)
         }
         todayDateLabel.snp.makeConstraints { make in
@@ -111,25 +109,18 @@ class HomeViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
         }
         tempLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalTo(todayDateLabel.snp.bottom)
-            make.right.equalToSuperview().inset(20)
+            make.top.equalTo(todayDateLabel.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
         }
-        
         lottieView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(todayDateLabel.snp.bottom)
+            make.top.equalTo(tempLabel.snp.bottom)
             make.width.equalTo(240)
             make.height.equalTo(240)
         }
         
         var boxes: [UIView] = []
         let colors: [UIColor] = [
-            .systemBlue,
-            .systemRed,
-            .systemGreen,
-            .systemYellow,
-            .systemOrange,
             .systemPurple,
             .systemPink,
             .systemTeal,
@@ -137,7 +128,7 @@ class HomeViewController: UIViewController {
             .systemGray
         ]
         
-        for i in 0..<10 {
+        for i in 0..<colors.count {
             let box = UIView()
             box.backgroundColor = colors[i]
             contentView.addSubview(box)
@@ -191,11 +182,15 @@ class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         
+        homeViewModel.getCurrentForecast()
+        
         homeViewModel.$currentForecast
             .receive(on: DispatchQueue.main)
             .sink { [weak self] forecast in
+                let condition = WeatherCondition.getWeatherDescription(from: forecast?.weatherCode) ?? "-"
                 let temp = forecast?.temperature2M?.formatted() ?? "-"
-                self?.tempLabel.text = temp
+                let unit = forecast?.temperatureUnit ?? ""
+                self?.tempLabel.text = "\(condition) | \(temp)\(unit)"
             }
             .store(in: &cancellables)
         
@@ -229,7 +224,7 @@ class HomeFloatingPanelLayout: FloatingPanelLayout {
     var anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] {
         return [
             .full: FloatingPanelLayoutAnchor(fractionalInset: 0.88, edge: .bottom, referenceGuide: .safeArea),
-            .half: FloatingPanelLayoutAnchor(fractionalInset: 0.6, edge: .bottom, referenceGuide: .safeArea)
+            .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .safeArea)
         ]
     }
 }
@@ -255,7 +250,7 @@ class HomeFloatingViewController: UIViewController {
         tableView.dataSource = self
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.left.right.equalToSuperview()
             make.top.equalToSuperview().offset(20)
         }
     }
@@ -417,12 +412,9 @@ class MainTodayContentView: UIView {
         let now = Date.now
         
         let currentHour = calendar.component(.hour, from: now)
-        let currentMinute = calendar.component(.minute, from: now)
         
-        let startHour = (currentMinute == 0) ? currentHour : currentHour + 1
-        
-        for hour in startHour...23 {
-            let newTime = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: now)!
+        for offset in 0...7 {
+            let newTime = calendar.date(bySettingHour: (currentHour + offset) % 24, minute: 0, second: 0, of: now)!
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm"
             let timeString = dateFormatter.string(from: newTime)
@@ -442,7 +434,7 @@ extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
-        let item = hourlyTimeList[indexPath.item]
+        let item = indexPath.item == 0 ? "Now" : hourlyTimeList[indexPath.item]
         
         let title = UILabel()
         title.text = item
