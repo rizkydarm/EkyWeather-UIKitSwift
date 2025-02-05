@@ -16,7 +16,6 @@ private let homeViewModel = HomeViewModel(forecastUseCase: ForecastUseCaseImpl()
 class HomeViewController: UIViewController {
     
     private let homeViewModel = HomeViewModel(forecastUseCase: ForecastUseCaseImpl())
-    private let locationViewModel = LocationViewModel()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -182,7 +181,31 @@ class HomeViewController: UIViewController {
     
     private func bindViewModel() {
         
-        homeViewModel.getCurrentForecast()
+        homeViewModel.requestWhenInUseAuthorization()
+        homeViewModel.startUpdatingLocation()
+        
+        homeViewModel.$city
+            .sink { [weak self] city in
+                guard let city = city else { return }
+                self?.placeButton.setTitle(city, for: .normal)
+            }
+            .store(in: &cancellables)
+        
+        homeViewModel.$latitude
+            .combineLatest(homeViewModel.$longitude)
+            .sink { [weak self] latitude, longitude in
+                guard let latitude = latitude, let longitude = longitude else { return }
+                self?.homeViewModel.getCurrentForecast(latitude, longitude)
+            }
+            .store(in: &cancellables)
+            
+        
+//        homeViewModel.$error
+//            .compactMap { $0 }
+//            .sink { [weak self] error in
+//            
+//            }
+//            .store(in: &cancellables)
         
         homeViewModel.$currentForecast
             .receive(on: DispatchQueue.main)
@@ -193,13 +216,11 @@ class HomeViewController: UIViewController {
                 self?.tempLabel.text = "\(condition) | \(temp)\(unit)"
             }
             .store(in: &cancellables)
-        
-        locationViewModel.$city
-            .receive(on: DispatchQueue.main /*RunLoop.main*/)
-            .sink { [weak self] city in
-                self?.placeButton.setTitle(city, for: .normal)
-            }
-            .store(in: &cancellables)
+    }
+    
+    deinit {
+        // Cancel all subscriptions when the view controller is deallocated
+        cancellables.removeAll()
     }
 }
 

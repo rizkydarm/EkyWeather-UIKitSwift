@@ -8,25 +8,31 @@
 import UIKit
 import CoreLocation
 
+protocol LocationManagerDelegate: AnyObject {
+    func didUpdateLocation(latitude: Double, longitude: Double, city: String?, country: String?)
+    func didFailWithError(error: Error)
+}
+
 class LocationManager: NSObject {
     
-    static let shared = LocationManager()
-    
-    // Publishers for location data
     var latitude: Double?
     var longitude: Double?
     var city: String?
     var country: String?
     
     private let locationManager = CLLocationManager()
+    weak var delegate: LocationManagerDelegate?
     
     override init() {
         super.init()
         
         // Set up location manager
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    }
+    
+    func requestWhenInUseAuthorization() {
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
     
     func startUpdatingLocation() {
@@ -37,30 +43,23 @@ class LocationManager: NSObject {
         locationManager.stopUpdatingLocation()
     }
     
-    // Reverse geocode location to get city and country
-    private func reverseGeocode(location: CLLocation) async {
+    private func reverseGeocode(location: CLLocation, completion: @escaping (String?, String?) -> Void) {
         let geocoder = CLGeocoder()
         
-        do {
-            let placemark = try await geocoder.reverseGeocodeLocation(location)
-            city = placemark.first?.locality
-            country = placemark.first?.country
-//                .publisher
-//                .sink { completion in
-//                    if case .failure(let error) = completion {
-//                        print("Failed to reverse geo code location: \(error.localizedDescription)")
-//                        log.error("Failed to reverse geo code location: \(error)")
-//                    }
-//                } receiveValue: { [weak self] placemark in
-//                    self?.city = placemark.locality ?? "Unknown City"
-//                    self?.country = placemark.country ?? "Unknown Country"
-//                    log.info("Reverse Geocode Location City: \(self?.city ?? ""), Country: \(self?.country ?? "")")
-//                }
-//                .store(in: &cancellables)
-        } catch {
-            log.error("Failed to reverse geo code location: \(error.localizedDescription)")
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let error = error {
+                self.delegate?.didFailWithError(error: error)
+                completion(nil, nil)
+                return
+            }
+            if let placemark = placemarks?.first {
+                let city = placemark.locality ?? "Unknown City"
+                let country = placemark.country ?? "Unknown Country"
+                completion(city, country)
+            } else {
+                completion(nil, nil)
+            }
         }
-        
     }
 }
 
@@ -72,17 +71,17 @@ extension LocationManager: CLLocationManagerDelegate {
         // Stop updating location to save battery
         locationManager.stopUpdatingLocation()
         
-        // Update latitude and longitude
-        latitude = location.coordinate.latitude
-        longitude = location.coordinate.longitude
+        // Get latitude and longitude
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
         
-        // Reverse geocode the location
-        Task {
-            await reverseGeocode(location: location)
+        // Reverse geocode to get city and country
+        reverseGeocode(location: location) { (city, country) in
+            self.delegate?.didUpdateLocation(latitude: latitude, longitude: longitude, city: city, country: country)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        log.error("Failed to find user's location: \(error.localizedDescription)")
+        delegate?.didFailWithError(error: error)
     }
 }

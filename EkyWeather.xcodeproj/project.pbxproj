@@ -14,6 +14,7 @@
 		254652BD2D3CA2A2008F6EFD /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254652BC2D3CA2A2008F6EFD /* LaunchViewController.swift */; };
 		254652C02D3CBCCD008F6EFD /* popcorn.json in Resources */ = {isa = PBXBuildFile; fileRef = 254652BF2D3CBCCD008F6EFD /* popcorn.json */; };
 		254652C22D3CBCD8008F6EFD /* clapperboard.json in Resources */ = {isa = PBXBuildFile; fileRef = 254652C12D3CBCD8008F6EFD /* clapperboard.json */; };
+		257315C92D537AE7005C0A46 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257315C82D537AE7005C0A46 /* LocationManager.swift */; };
 		25AFF47B2D4E6C8000C23E0F /* LogUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFF47A2D4E6C7900C23E0F /* LogUtility.swift */; };
 		25C0D6A42D3BED3000D69A44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C0D69C2D3BED3000D69A44 /* Assets.xcassets */; };
 		25C0D6A62D3BED3000D69A44 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C0D6A02D3BED3000D69A44 /* LaunchScreen.storyboard */; };
@@ -65,7 +66,6 @@
 		25E19BA92D3E1F7D00EE58E8 /* Extension+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E19BA82D3E1F7D00EE58E8 /* Extension+UIButton.swift */; };
 		25E6FB402D3CEED80064CD75 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E6FB3F2D3CEEBC0064CD75 /* Extension+UIView.swift */; };
 		25E6FB432D3CFEE30064CD75 /* ThemeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E6FB422D3CFEDE0064CD75 /* ThemeUtility.swift */; };
-		25F112822D4CFFF90034B098 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F112812D4CFFF90034B098 /* LocationViewModel.swift */; };
 		4105049D069EBBC0DE169E19 /* Pods_EkyWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7488D11C2DD89A8163FE99FE /* Pods_EkyWeather.framework */; };
 		C36F253B3A95849218145A6D /* Pods_EkyWeatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15159AA7DBD2C6EFDCFE68B2 /* Pods_EkyWeatherTests.framework */; };
 		CEC8C18301BC630CC0A9111E /* Pods_EkyWeather_EkyWeatherUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 314DBBAC515E36CDC29925FC /* Pods_EkyWeather_EkyWeatherUITests.framework */; };
@@ -97,6 +97,7 @@
 		254652BC2D3CA2A2008F6EFD /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		254652BF2D3CBCCD008F6EFD /* popcorn.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = popcorn.json; sourceTree = "<group>"; };
 		254652C12D3CBCD8008F6EFD /* clapperboard.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clapperboard.json; sourceTree = "<group>"; };
+		257315C82D537AE7005C0A46 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		25AFF47A2D4E6C7900C23E0F /* LogUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogUtility.swift; sourceTree = "<group>"; };
 		25C0D63D2D3BE32600D69A44 /* EkyWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EkyWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25C0D6562D3BE32800D69A44 /* EkyWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EkyWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,7 +153,6 @@
 		25E19BA82D3E1F7D00EE58E8 /* Extension+UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIButton.swift"; sourceTree = "<group>"; };
 		25E6FB3F2D3CEEBC0064CD75 /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
 		25E6FB422D3CFEDE0064CD75 /* ThemeUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeUtility.swift; sourceTree = "<group>"; };
-		25F112812D4CFFF90034B098 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		314DBBAC515E36CDC29925FC /* Pods_EkyWeather_EkyWeatherUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EkyWeather_EkyWeatherUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7488D11C2DD89A8163FE99FE /* Pods_EkyWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EkyWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D04B9E38F1362DAFC65AB8 /* Pods-EkyWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EkyWeather.debug.xcconfig"; path = "Target Support Files/Pods-EkyWeather/Pods-EkyWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -238,7 +238,6 @@
 				25DE04DF2D40B62D0011D86F /* BaseViewModel.swift */,
 				25C0D6B32D3BF71200D69A44 /* LoginViewModel.swift */,
 				25D8A47B2D4B4F3A0082656B /* HomeViewModel.swift */,
-				25F112812D4CFFF90034B098 /* LocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -377,8 +376,9 @@
 		25DE04E42D40B7340011D86F /* Remote */ = {
 			isa = PBXGroup;
 			children = (
-				25D8A46D2D4B32C80082656B /* ForecastApiManager.swift */,
 				25D8A46A2D4B2DF10082656B /* Model */,
+				257315C82D537AE7005C0A46 /* LocationManager.swift */,
+				25D8A46D2D4B32C80082656B /* ForecastApiManager.swift */,
 				25D8A4662D4B1FD20082656B /* Api.swift */,
 				25D8A4682D4B26B80082656B /* ForecastApi.swift */,
 				25D8A4642D4B1EC60082656B /* ApiManager.swift */,
@@ -721,7 +721,6 @@
 				25CCB06B2D3C920800696680 /* Extension+UIBarButtonItem.swift in Sources */,
 				25DE04F22D40BC120011D86F /* AuthRepository.swift in Sources */,
 				25E19BA52D3E010500EE58E8 /* FontUtility.swift in Sources */,
-				25F112822D4CFFF90034B098 /* LocationViewModel.swift in Sources */,
 				25C0D6A72D3BED3000D69A44 /* AppDelegate.swift in Sources */,
 				25D8A45B2D4B04120082656B /* MySteps.swift in Sources */,
 				25D8A4722D4B33EE0082656B /* CurrentForecastEntity.swift in Sources */,
@@ -753,6 +752,7 @@
 				25DE04E02D40B6340011D86F /* BaseViewModel.swift in Sources */,
 				254652B92D3C95F0008F6EFD /* Extension+UIStackView.swift in Sources */,
 				25DE04F42D40BC240011D86F /* AuthUseCase.swift in Sources */,
+				257315C92D537AE7005C0A46 /* LocationManager.swift in Sources */,
 				25CCB05E2D3C8DC800696680 /* Extension+UIScrollView.swift in Sources */,
 				25CCB0612D3C8E0700696680 /* Extension+String.swift in Sources */,
 				25D8A4702D4B33B40082656B /* UserEntity.swift in Sources */,

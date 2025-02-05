@@ -14,8 +14,8 @@ class LocationViewModel: NSObject, ObservableObject {
     // Publishers for location data
     @Published var latitude: Double?
     @Published var longitude: Double?
-    @Published var city: String = "-"
-    @Published var country: String = "-"
+    @Published var city: String?
+    @Published var country: String?
     
     private let locationManager = CLLocationManager()
     private var cancellables = Set<AnyCancellable>()
