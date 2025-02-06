@@ -11,7 +11,7 @@ target 'EkyWeather' do
   pod 'FloatingPanel', :git => 'https://github.com/scenee/FloatingPanel.git'
   pod 'RealmSwift', :git => 'https://github.com/realm/realm-swift.git'
   pod 'SwiftSVG', :git => 'https://github.com/mchoe/SwiftSVG'
-  pod 'FTIndicator', :git => 'https://github.com/liufengting/FTIndicator'
+#  pod 'FTIndicator', :git => 'https://github.com/liufengting/FTIndicator'
   pod 'RouteComposer', :git => 'https://github.com/ekazaev/route-composer'
   pod 'SwiftyBeaver', :git => 'https://github.com/SwiftyBeaver/SwiftyBeaver'
 

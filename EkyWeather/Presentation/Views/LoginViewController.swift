@@ -282,7 +282,7 @@ class LoginFloatingViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.clipsToBounds = true
         button.addBounceAnimation()
-        button.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
+        button.addTarget(LoginFloatingViewController.self, action: #selector(submitButtonTapped), for: .touchUpInside)
         return button
     }()
     

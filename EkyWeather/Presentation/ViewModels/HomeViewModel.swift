@@ -59,35 +59,31 @@ class HomeViewModel: BaseViewModel {
             .store(in: &cancellables)
     }
     
-    func getOneDayForecast() {
-        if let latitude = locationManager.latitude, let longitude = locationManager.longitude {
-            forecastUseCase.getOneDay(latitude: latitude, longitude: longitude)
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] completion in
-                    if case .failure(let error) = completion {
-                        self?.error = error.localizedDescription
-                    }
-                } receiveValue: { [weak self] entity in
-                    self?.oneDayForecast = entity
+    func getOneDayForecast(_ latitude: Double, _ longitude: Double) {
+        forecastUseCase.getOneDay(latitude: latitude, longitude: longitude)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.error = error.localizedDescription
                 }
-                .store(in: &cancellables)
-        }
+            } receiveValue: { [weak self] entity in
+                self?.oneDayForecast = entity
+            }
+            .store(in: &cancellables)
         
     }
     
-    func getSevenDaysForecast() {
-        if let latitude = locationManager.latitude, let longitude = locationManager.longitude {
-            forecastUseCase.getSevenDays(latitude: latitude, longitude: longitude)
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] completion in
-                    if case .failure(let error) = completion {
-                        self?.error = error.localizedDescription
-                    }
-                } receiveValue: { [weak self] entity in
-                    self?.sevenDaysForecast = entity
+    func getSevenDaysForecast(_ latitude: Double, _ longitude: Double) {
+        forecastUseCase.getSevenDays(latitude: latitude, longitude: longitude)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.error = error.localizedDescription
                 }
-                .store(in: &cancellables)
-        }
+            } receiveValue: { [weak self] entity in
+                self?.sevenDaysForecast = entity
+            }
+            .store(in: &cancellables)
     }
 }
 

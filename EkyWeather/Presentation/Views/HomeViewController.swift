@@ -11,7 +11,7 @@ import Combine
 import FloatingPanel
 import Lottie
 
-private let homeViewModel = HomeViewModel(forecastUseCase: ForecastUseCaseImpl())
+
 
 class HomeViewController: UIViewController {
     
@@ -157,7 +157,7 @@ class HomeViewController: UIViewController {
     private func setupFloatingPanel() {
         fpc.delegate = self
         
-        let contentVC = HomeFloatingViewController()
+        let contentVC = HomeFloatingViewController(homeViewModel: homeViewModel)
         
         fpc.set(contentViewController: contentVC)
         fpc.layout = HomeFloatingPanelLayout()
@@ -196,16 +196,9 @@ class HomeViewController: UIViewController {
             .sink { [weak self] latitude, longitude in
                 guard let latitude = latitude, let longitude = longitude else { return }
                 self?.homeViewModel.getCurrentForecast(latitude, longitude)
+                self?.homeViewModel.getOneDayForecast(latitude, longitude)
             }
             .store(in: &cancellables)
-            
-        
-//        homeViewModel.$error
-//            .compactMap { $0 }
-//            .sink { [weak self] error in
-//            
-//            }
-//            .store(in: &cancellables)
         
         homeViewModel.$currentForecast
             .receive(on: DispatchQueue.main)
@@ -219,7 +212,6 @@ class HomeViewController: UIViewController {
     }
     
     deinit {
-        // Cancel all subscriptions when the view controller is deallocated
         cancellables.removeAll()
     }
 }
@@ -252,7 +244,18 @@ class HomeFloatingPanelLayout: FloatingPanelLayout {
 
 class HomeFloatingViewController: UIViewController {
     
-    private let homeViewModel = HomeViewModel(forecastUseCase: ForecastUseCaseImpl())
+    private var cancellables = Set<AnyCancellable>()
+    
+    var homeViewModel: HomeViewModel
+
+    init(homeViewModel: HomeViewModel) {
+        self.homeViewModel = homeViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
@@ -274,6 +277,15 @@ class HomeFloatingViewController: UIViewController {
             make.bottom.left.right.equalToSuperview()
             make.top.equalToSuperview().offset(20)
         }
+    }
+    
+    func bindViewModel() {
+        homeViewModel.$oneDayForecast
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] forecast in
+                
+            }
+            .store(in: &cancellables)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
