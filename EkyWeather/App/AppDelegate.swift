@@ -8,13 +8,25 @@
 import UIKit
 import CoreData
 
+#if DEBUG
+import netfox
+#endif
+
+
+#if DEBUG
 internal let log = LogUtility.shared.log
+#endif
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+#if DEBUG
+        NFX.sharedInstance().start() // in didFinishLaunchingWithOptions:
+#endif
+        
         return true
     }
 

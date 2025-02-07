@@ -30,7 +30,7 @@ class ForecastRepositoryImpl {
     }
     func getOneDay(latitude: Double, longitude: Double) -> AnyPublisher<OneDayForecastEntity, Error> {
         return Future { [weak self] promise in
-            self?.forcastApiManager.getCurrent(latitude: latitude, longitude: longitude) { result in
+            self?.forcastApiManager.getHourly(latitude: latitude, longitude: longitude) { result in
                 switch result {
                 case .success(let model):
                     let entity = OneDayForecastEntity.fromResponseModel(model)
@@ -43,7 +43,7 @@ class ForecastRepositoryImpl {
     }
     func getSevenDays(latitude: Double, longitude: Double) -> AnyPublisher<SevenDaysForecastEntity, Error> {
         return Future { [weak self] promise in
-            self?.forcastApiManager.getCurrent(latitude: latitude, longitude: longitude) { result in
+            self?.forcastApiManager.getDaily(latitude: latitude, longitude: longitude) { result in
                 switch result {
                 case .success(let model):
                     let entity = SevenDaysForecastEntity.fromResponseModel(model)

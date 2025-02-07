@@ -5,6 +5,8 @@
 //  Created by Eky on 30/01/25.
 //
 
+import Foundation
+
 struct OneDayForecastEntity: Equatable {
     let latitude, longitude: Double?
     let hourlyForecast: [HourlyForecastEntity]?
@@ -17,28 +19,34 @@ struct OneDayForecastEntity: Equatable {
         let apparentTemperature = model.hourly?.apparentTemperature ?? []
         let weatherCode = model.hourly?.weatherCode ?? []
         
+        let len = min(time.count, temperature2M.count, relativeHumidity2M.count, apparentTemperature.count, weatherCode.count)
+        
         var hourlyArray: [HourlyForecastEntity] = []
-        for i in 0..<time.count {
+        for i in 0..<len {
             let entity = HourlyForecastEntity(
-                time: time[i],
+                time: Date.tryParse(string: time[i], dateFormats: ["yyyy-MM-dd'T'HH:mm"]),
                 temperature2M: temperature2M[i],
                 relativeHumidity2M: relativeHumidity2M[i],
                 apparentTemperature: apparentTemperature[i],
-                weatherCode: weatherCode[i]
+                weatherCondition:  WeatherCondition.init(rawValue: weatherCode[i]),
+                temperatureUnit: model.hourlyUnits?.temperature2M
             )
             hourlyArray.append(entity)
         }
         return OneDayForecastEntity(
-            latitude: model.latitude, longitude: model.longitude, hourlyForecast: hourlyArray
+            latitude: model.latitude,
+            longitude: model.longitude,
+            hourlyForecast: hourlyArray
         )
     }
 
 }
 
 struct HourlyForecastEntity: Equatable {
-    let time: String?
+    let time: Date?
     let temperature2M: Double?
     let relativeHumidity2M: Int?
     let apparentTemperature: Double?
-    let weatherCode: Int?
+    let weatherCondition: WeatherCondition?
+    let temperatureUnit: String?
 }

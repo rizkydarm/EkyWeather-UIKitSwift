@@ -242,9 +242,8 @@ class HomeFloatingPanelLayout: FloatingPanelLayout {
     }
 }
 
+
 class HomeFloatingViewController: UIViewController {
-    
-    private var cancellables = Set<AnyCancellable>()
     
     var homeViewModel: HomeViewModel
 
@@ -279,26 +278,17 @@ class HomeFloatingViewController: UIViewController {
         }
     }
     
-    func bindViewModel() {
-        homeViewModel.$oneDayForecast
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] forecast in
-                
-            }
-            .store(in: &cancellables)
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            if traitCollection.userInterfaceStyle == .dark {
-                // Dark Mode
-            } else {
-                // Light Mode
-            }
-        }
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//
+//        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+//            if traitCollection.userInterfaceStyle == .dark {
+//                // Dark Mode
+//            } else {
+//                // Light Mode
+//            }
+//        }
+//    }
 }
 
 extension HomeFloatingViewController: UITableViewDelegate, UITableViewDataSource {
@@ -362,7 +352,8 @@ extension HomeFloatingViewController: UITableViewDelegate, UITableViewDataSource
             let cell = UITableViewCell(style: .default, reuseIdentifier: "main_cell")
             cell.backgroundColor = .quaternarySystemFill
             
-            let today = MainTodayContentView()
+            let today = MainTodayContentView(homeViewModel: homeViewModel)
+            
             cell.contentView.addSubview(today)
             today.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
@@ -400,21 +391,25 @@ extension HomeFloatingViewController: UITableViewDelegate, UITableViewDataSource
 
 class MainTodayContentView: UIView {
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    var homeViewModel: HomeViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(homeViewModel: HomeViewModel) {
+        self.homeViewModel = homeViewModel
+        super.init(frame: .zero)
         setup()
+        setupBindings()
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private lazy var hourlyCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 120, height: 200)
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        //        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         layout.minimumLineSpacing = 8
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.backgroundColor = .clear
@@ -436,16 +431,23 @@ class MainTodayContentView: UIView {
         }
     }
     
+    internal func setupBindings() {
+        homeViewModel.$oneDayForecast
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] forecast in
+                guard let forecast = forecast else { return }
+                self?.hourlyCollection.reloadData()
+            }
+            .store(in: &cancellables)
+    }
+    
     private var hourlyTimeList: [String] { generateHourlyTimeList() }
     
     func generateHourlyTimeList() -> [String] {
         var timeList: [String] = []
-        
         let calendar = Calendar.current
         let now = Date.now
-        
         let currentHour = calendar.component(.hour, from: now)
-        
         for offset in 0...7 {
             let newTime = calendar.date(bySettingHour: (currentHour + offset) % 24, minute: 0, second: 0, of: now)!
             let dateFormatter = DateFormatter()
@@ -453,12 +455,19 @@ class MainTodayContentView: UIView {
             let timeString = dateFormatter.string(from: newTime)
             timeList.append(timeString)
         }
-        
         return timeList
+    }
+    
+    deinit {
+        cancellables.removeAll()
     }
 }
 
 extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    private var length: Int {
+        hourlyTimeList.count
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hourlyTimeList.count
@@ -468,9 +477,21 @@ extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as? WeatherCollectionViewCell else {
             fatalError("Could not dequeue WeatherCollectionViewCell")
         }
-
-        let item = indexPath.item == 0 ? "Now" : hourlyTimeList[indexPath.item]
-        cell.configure(with: item)
+        
+        let item = hourlyTimeList[indexPath.item]
+        let forecasts = homeViewModel.oneDayForecast?.hourlyForecast
+        
+        if (forecasts?.count ?? 0 >= hourlyTimeList.count) {
+//            if let forecast = forecasts?[indexPath.item] {
+//                
+//            }
+            let sameHour = forecasts?.first(where: {e in
+                return e.time?.to24HourString() ?? "" == item
+            })
+            if let sameHour = sameHour {
+                cell.configure(indexPath.item == 0 ? "Now" : item, forecast: sameHour)
+            }
+        }
         
         return cell
     }
@@ -533,9 +554,9 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with item: String) {
-        title.text = item
-        desc.text = "Thunderstorm and Rain"
+    func configure(_ title: String, forecast item: HourlyForecastEntity) {
+        self.title.text = title
+        desc.text = "\(item.weatherCondition?.description ?? "")\n\(item.temperature2M)\(item.temperatureUnit)"
         
         if (!lottie.isAnimationPlaying) {
             lottie.play()

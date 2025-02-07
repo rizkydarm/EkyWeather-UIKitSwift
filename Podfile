@@ -14,6 +14,7 @@ target 'EkyWeather' do
 #  pod 'FTIndicator', :git => 'https://github.com/liufengting/FTIndicator'
   pod 'RouteComposer', :git => 'https://github.com/ekazaev/route-composer'
   pod 'SwiftyBeaver', :git => 'https://github.com/SwiftyBeaver/SwiftyBeaver'
+  pod 'netfox', :git => 'https://github.com/kasketis/netfox'
 
   # Pods for EkyWeather
 

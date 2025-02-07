@@ -12,10 +12,9 @@ class LoginViewModel: BaseViewModel {
     
     private let authUseCase: AuthUseCase
     
-    // Published properties
     @Published var email = ""
     @Published var password = ""
-    @Published var isLoading = false
+    @Published var isSubmitLoading = false
     @Published var error: String?
     @Published var isLoggedIn = false
     
@@ -24,13 +23,20 @@ class LoginViewModel: BaseViewModel {
     }
     
     func login() {
-        isLoading = true
+        isSubmitLoading = true
         error = nil
+        
+//        Just("Waited for 1 seconds")
+//            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+//            .sink { [weak self]  value in
+//                self?.isSubmitLoading = false
+//            }
+//            .store(in: &cancellables)
         
         authUseCase.login(email: email, password: password)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                self?.isLoading = false
+                self?.isSubmitLoading = false
                 if case .failure(let error) = completion {
                     self?.error = error.localizedDescription
                 }
@@ -41,13 +47,20 @@ class LoginViewModel: BaseViewModel {
     }
     
     func register() {
-        isLoading = true
+        isSubmitLoading = true
         error = nil
+        
+//        Just("Waited for 1 seconds")
+//            .delay(for: .seconds(1), scheduler: DispatchQueue.main)
+//            .sink { [weak self]  value in
+//                self?.isSubmitLoading = false
+//            }
+//            .store(in: &cancellables)
         
         authUseCase.register(email: email, password: password)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                self?.isLoading = false
+                self?.isSubmitLoading = false
                 if case .failure(let error) = completion {
                     self?.error = error.localizedDescription
                 }

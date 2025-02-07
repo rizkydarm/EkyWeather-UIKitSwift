@@ -14,6 +14,23 @@ extension Date {
         let components = DateComponents(year: year, month: month, day: day)
         self = calendar.date(from: components)!
     }
+    
+    /// Converts the date to a string in 24-hour format ("HH:mm").
+    func toHourMinuteString(format: String = "HH:mm") -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
+    
+    /// Converts the date to a string in 12-hour format with AM/PM ("hh:mm a").
+    func to12HourString() -> String {
+        return self.toHourMinuteString(format: "hh:mm a")
+    }
+    
+    /// Converts the date to a string in 24-hour format ("HH:mm").
+    func to24HourString() -> String {
+        return self.toHourMinuteString(format: "HH:mm")
+    }
 
     // Get tomorrow's date
     func getTomorrow() -> Date {
@@ -97,6 +114,39 @@ extension Date {
 
         // If no format worked, return nil
         return nil
+    }
+    
+    func isSame(as date: Date, components: Set<Calendar.Component>) -> Bool {
+        let calendar = Calendar.current
+        
+        for component in components {
+            switch component {
+            case .year:
+                if calendar.component(.year, from: self) != calendar.component(.year, from: date) {
+                    return false
+                }
+            case .month:
+                if calendar.component(.month, from: self) != calendar.component(.month, from: date) {
+                    return false
+                }
+            case .day:
+                if calendar.component(.day, from: self) != calendar.component(.day, from: date) {
+                    return false
+                }
+            case .hour:
+                if calendar.component(.hour, from: self) != calendar.component(.hour, from: date) {
+                    return false
+                }
+            default:
+                break
+            }
+        }
+        
+        return true
+    }
+    
+    func isSameHour(as date: Date) -> Bool {
+        return isSame(as: date, components: [.year, .month, .day, .hour])
     }
 
 }

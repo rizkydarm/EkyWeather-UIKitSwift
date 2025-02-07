@@ -28,4 +28,34 @@ extension UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+    func showToast(message: String, duration: TimeInterval = 2.0) {
+        let toastLabel = UILabel()
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center
+        toastLabel.font = UIFont.systemFont(ofSize: 14)
+        toastLabel.text = message
+        toastLabel.alpha = 0.0
+        toastLabel.layer.cornerRadius = 10
+        toastLabel.clipsToBounds = true
+        toastLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(toastLabel)
+        
+        NSLayoutConstraint.activate([
+            toastLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            toastLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            toastLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            toastLabel.alpha = 1.0
+        }) { _ in
+            UIView.animate(withDuration: 0.5, delay: duration, options: [], animations: {
+                toastLabel.alpha = 0.0
+            }) { _ in
+                toastLabel.removeFromSuperview()
+            }
+        }
+    }
 }

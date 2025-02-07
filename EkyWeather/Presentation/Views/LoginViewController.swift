@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import Combine
 import FloatingPanel
-import FTIndicator
 
 class LoginViewController: UIViewController {
     
@@ -241,7 +240,7 @@ class LoginFloatingPanelLayout: FloatingPanelLayout {
 
 class LoginFloatingPanelBehavior: FloatingPanelBehavior {
     let springDecelerationRate = UIScrollView.DecelerationRate.fast.rawValue + 0.02
-    let springResponseTime = 2.0  // Set this to 1.0 for 1 second duration
+    let springResponseTime = 2.0
     
     func shouldProjectMomentum(_ fpc: FloatingPanelController, to proposedState: FloatingPanelState) -> Bool {
         return true
@@ -282,7 +281,7 @@ class LoginFloatingViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.clipsToBounds = true
         button.addBounceAnimation()
-        button.addTarget(LoginFloatingViewController.self, action: #selector(submitButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -385,12 +384,12 @@ class LoginFloatingViewController: UIViewController {
             }
             .store(in: &cancellables)
             
-        viewModel.$isLoading
+        viewModel.$isSubmitLoading
             .sink { [weak self] isLoading in
                 if isLoading {
-                    FTIndicator.showProgress(withMessage: "Loading...")
+                    self?.submitButton.showActivityIndicator()
                 } else {
-                    FTIndicator.dismissProgress()
+                    self?.submitButton.hideActivityIndicator()
                 }
             }
             .store(in: &cancellables)
@@ -398,7 +397,7 @@ class LoginFloatingViewController: UIViewController {
         viewModel.$error
             .sink { [weak self] error in
                 if let error = error {
-                    FTIndicator.showError(withMessage: error.lowercased())
+                    self?.showToast(message: error)
                     self?.viewModel.error = nil
                 }
             }
