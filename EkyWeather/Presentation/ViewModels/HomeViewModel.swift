@@ -30,6 +30,10 @@ class HomeViewModel: BaseViewModel {
     @Published var city: String?
     @Published var country: String?
     
+    @Published var isLoadingCurrentForecast: Bool = false
+    @Published var isLoadingOneDayForecast: Bool = false
+    @Published var isLoadingSevenDaysForecast: Bool = false
+    
     init(forecastUseCase: ForecastUseCase) {
         self.forecastUseCase = forecastUseCase
     }
@@ -47,26 +51,32 @@ class HomeViewModel: BaseViewModel {
     }
     
     func getCurrentForecast(_ latitude: Double, _ longitude: Double) {
+        isLoadingCurrentForecast = true
         forecastUseCase.getCurrent(latitude: latitude, longitude: longitude)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
+                    self?.isLoadingCurrentForecast = false
                     self?.error = error.localizedDescription
                 }
             } receiveValue: { [weak self] entity in
+                self?.isLoadingCurrentForecast = false
                 self?.currentForecast = entity
             }
             .store(in: &cancellables)
     }
     
     func getOneDayForecast(_ latitude: Double, _ longitude: Double) {
+        isLoadingOneDayForecast = true
         forecastUseCase.getOneDay(latitude: latitude, longitude: longitude)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
+                    self?.isLoadingOneDayForecast = false
                     self?.error = error.localizedDescription
                 }
             } receiveValue: { [weak self] entity in
+                self?.isLoadingOneDayForecast = false
                 self?.oneDayForecast = entity
             }
             .store(in: &cancellables)
@@ -74,13 +84,16 @@ class HomeViewModel: BaseViewModel {
     }
     
     func getSevenDaysForecast(_ latitude: Double, _ longitude: Double) {
+        isLoadingSevenDaysForecast = false
         forecastUseCase.getSevenDays(latitude: latitude, longitude: longitude)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
+                    self?.isLoadingSevenDaysForecast = false
                     self?.error = error.localizedDescription
                 }
             } receiveValue: { [weak self] entity in
+                self?.isLoadingSevenDaysForecast = false
                 self?.sevenDaysForecast = entity
             }
             .store(in: &cancellables)

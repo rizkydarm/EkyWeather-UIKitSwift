@@ -16,7 +16,7 @@ extension Date {
     }
     
     /// Converts the date to a string in 24-hour format ("HH:mm").
-    func toHourMinuteString(format: String = "HH:mm") -> String {
+    func toStringWith(format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
@@ -24,12 +24,12 @@ extension Date {
     
     /// Converts the date to a string in 12-hour format with AM/PM ("hh:mm a").
     func to12HourString() -> String {
-        return self.toHourMinuteString(format: "hh:mm a")
+        return self.toStringWith(format: "hh:mm a")
     }
     
     /// Converts the date to a string in 24-hour format ("HH:mm").
     func to24HourString() -> String {
-        return self.toHourMinuteString(format: "HH:mm")
+        return self.toStringWith(format: "HH:mm")
     }
 
     // Get tomorrow's date

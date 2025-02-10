@@ -38,15 +38,20 @@ class HomeViewController: UIViewController {
         return button
     }()
     
-    private lazy var todayDateLabel = {
+    private let todayDateLabel = {
         let label = UILabel()
-        label.text = Date.now.getStringFormattedDate("EEE, dd MMMM yyyy")
+        label.text = Date.now.getStringFormattedDate("EEEE, dd MMMM yyyy")
         return label
     }()
     
-    private lazy var tempLabel = {
+    private let tempLabel = {
         let label = UILabel()
         return label
+    }()
+    
+    private let loadingCurrentIndicator = {
+        let ui = UIActivityIndicatorView(style: .large)
+        return ui
     }()
 
     override func viewDidLoad() {
@@ -98,7 +103,7 @@ class HomeViewController: UIViewController {
         todayDateLabel.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 20, minimumFontSize: 16), weight: .medium)
         tempLabel.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 24, minimumFontSize: 16), weight: .bold)
         
-        boxBackground.addSubviews(lottieView, placeButton, todayDateLabel, tempLabel)
+        boxBackground.addSubviews(lottieView, placeButton, todayDateLabel, tempLabel, loadingCurrentIndicator)
         placeButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.left.equalToSuperview().offset(20)
@@ -106,6 +111,11 @@ class HomeViewController: UIViewController {
         todayDateLabel.snp.makeConstraints { make in
             make.top.equalTo(placeButton.snp.bottom)
             make.left.equalToSuperview().offset(20)
+        }
+        loadingCurrentIndicator.snp.makeConstraints { make in
+            make.top.equalTo(placeButton.snp.top).inset(20)
+            make.right.equalToSuperview().inset(20)
+            make.height.width.equalTo(40)
         }
         tempLabel.snp.makeConstraints { make in
             make.top.equalTo(todayDateLabel.snp.bottom).offset(16)
@@ -190,13 +200,15 @@ class HomeViewController: UIViewController {
                 self?.placeButton.setTitle(city, for: .normal)
             }
             .store(in: &cancellables)
-        
+                
         homeViewModel.$latitude
             .combineLatest(homeViewModel.$longitude)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] latitude, longitude in
                 guard let latitude = latitude, let longitude = longitude else { return }
                 self?.homeViewModel.getCurrentForecast(latitude, longitude)
                 self?.homeViewModel.getOneDayForecast(latitude, longitude)
+                self?.homeViewModel.getSevenDaysForecast(latitude, longitude)
             }
             .store(in: &cancellables)
         
@@ -209,6 +221,18 @@ class HomeViewController: UIViewController {
                 self?.tempLabel.text = "\(condition) | \(temp)\(unit)"
             }
             .store(in: &cancellables)
+        
+        homeViewModel.$isLoadingCurrentForecast
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.loadingCurrentIndicator.startAnimating()
+                } else {
+                    self?.loadingCurrentIndicator.stopAnimating()
+                }
+            }
+            .store(in: &cancellables)
+
     }
     
     deinit {
@@ -263,7 +287,7 @@ class HomeFloatingViewController: UIViewController {
         return table
     }()
     
-    private let items = Array(1...7).map { "Item \($0)" }
+    private var items: [String] { generateWeeklyList() }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -277,6 +301,21 @@ class HomeFloatingViewController: UIViewController {
             make.top.equalToSuperview().offset(20)
         }
     }
+    
+    func generateWeeklyList() -> [String] {
+        var dayList: [String] = []
+        let calendar = Calendar.current
+        let now = Date.now
+        for offset in 1...8 {
+            let newTime = calendar.date(byAdding: .day, value: offset, to: now)!
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "EEEE"
+            let timeString = dateFormatter.string(from: newTime)
+            dayList.append(timeString)
+        }
+        return dayList
+    }
+
     
 //    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 //        super.traitCollectionDidChange(previousTraitCollection)
@@ -314,7 +353,7 @@ extension HomeFloatingViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -435,7 +474,7 @@ class MainTodayContentView: UIView {
         homeViewModel.$oneDayForecast
             .receive(on: DispatchQueue.main)
             .sink { [weak self] forecast in
-                guard let forecast = forecast else { return }
+                guard let _ = forecast else { return }
                 self?.hourlyCollection.reloadData()
             }
             .store(in: &cancellables)
@@ -448,7 +487,7 @@ class MainTodayContentView: UIView {
         let calendar = Calendar.current
         let now = Date.now
         let currentHour = calendar.component(.hour, from: now)
-        for offset in 0...7 {
+        for offset in 1...8 {
             let newTime = calendar.date(bySettingHour: (currentHour + offset) % 24, minute: 0, second: 0, of: now)!
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm"
@@ -482,14 +521,11 @@ extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSo
         let forecasts = homeViewModel.oneDayForecast?.hourlyForecast
         
         if (forecasts?.count ?? 0 >= hourlyTimeList.count) {
-//            if let forecast = forecasts?[indexPath.item] {
-//                
-//            }
             let sameHour = forecasts?.first(where: {e in
                 return e.time?.to24HourString() ?? "" == item
             })
             if let sameHour = sameHour {
-                cell.configure(indexPath.item == 0 ? "Now" : item, forecast: sameHour)
+                cell.configure(item, forecast: sameHour)
             }
         }
         
@@ -509,6 +545,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     private let lottie: LottieAnimationView = {
         let animationView = LottieAnimationView()
         animationView.loopMode = .loop
+        animationView.backgroundBehavior = .continuePlaying
         return animationView
     }()
     
@@ -556,18 +593,20 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     
     func configure(_ title: String, forecast item: HourlyForecastEntity) {
         self.title.text = title
-        desc.text = "\(item.weatherCondition?.description ?? "")\n\(item.temperature2M)\(item.temperatureUnit)"
+        desc.text = "\(item.time?.toStringWith(format: "MM/dd") ?? "") \(item.time?.to24HourString() ?? "") \(item.temperature2M?.description ?? "") \(item.weatherCondition?.description ?? "")"
         
-        if (!lottie.isAnimationPlaying) {
-            lottie.play()
-        }
+//        if (!lottie.isAnimationPlaying) {
+//            
+//        }
+        lottie.play()
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-        if !lottie.isAnimationPlaying {
-            lottie.play()
-        }
+//        if !lottie.isAnimationPlaying {
+//            
+//        }
+//        lottie.play()
     }
 
 }
