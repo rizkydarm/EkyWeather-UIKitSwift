@@ -601,13 +601,13 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         lottie.play()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-//        if !lottie.isAnimationPlaying {
-//            
-//        }
-//        lottie.play()
-    }
+    // override func prepareForReuse() {
+    //    super.prepareForReuse()
+    //    if !lottie.isAnimationPlaying {
+           
+    //    }
+    //    lottie.play()
+    // }
 
 }
 
