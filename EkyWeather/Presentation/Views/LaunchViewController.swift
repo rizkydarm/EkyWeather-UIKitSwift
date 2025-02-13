@@ -11,7 +11,7 @@ import Lottie
 class LaunchViewController: UIViewController {
     
     let lottieView: LottieAnimationView = {
-        let view = LottieAnimationView(name: "clapperboard")
+        let view = LottieAnimationView()
         view.loopMode = .loop
         view.frame = .init(x: 0, y: 0, width: 300, height: 300)
         return view
@@ -26,6 +26,13 @@ class LaunchViewController: UIViewController {
     }
     
     private func setupLottieAnimation() {
+        
+        Task {
+            await lottieView.loadAnimation(from: try .named("sunrainy"))
+            lottieView.loopMode = .loop
+            lottieView.play()
+        }
+        
         lottieView.center = view.center
         lottieView.alpha = 0
         lottieView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)

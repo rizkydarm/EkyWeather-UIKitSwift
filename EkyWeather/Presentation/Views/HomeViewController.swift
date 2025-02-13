@@ -92,12 +92,6 @@ class HomeViewController: UIViewController {
         boxBackground.setGradientBackground([UIColor.primary, .systemBackground], direction: .vertical)
         contentView.addSubview(boxBackground)
         
-        Task {
-            await lottieView.loadAnimation(from: try .named("thunderstorm"))
-            lottieView.loopMode = .loop
-            lottieView.play()
-        }
-        
         placeButton.titleLabel?.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 40, minimumFontSize: 32), weight: .bold)
         placeButton.setTitleColor(.label, for: .normal)
         todayDateLabel.font = .systemFont(ofSize: FontUtility.scaledFontSize(baseFontSize: 20, minimumFontSize: 16), weight: .medium)
@@ -215,10 +209,17 @@ class HomeViewController: UIViewController {
         homeViewModel.$currentForecast
             .receive(on: DispatchQueue.main)
             .sink { [weak self] forecast in
-                let condition = WeatherCondition.getWeatherDescription(from: forecast?.weatherCode) ?? "-"
+                let condition = forecast?.weatherCondition?.description ?? "-"
                 let temp = forecast?.temperature2M?.formatted() ?? "-"
                 let unit = forecast?.temperatureUnit ?? ""
                 self?.tempLabel.text = "\(condition) | \(temp)\(unit)"
+                if let icon = forecast?.weatherCondition?.icon {
+                    Task {
+                        await self?.lottieView.loadAnimation(from: try .named(icon))
+                        self?.lottieView.loopMode = .loop
+                        self?.lottieView.play()
+                    }
+                }
             }
             .store(in: &cancellables)
         
@@ -581,10 +582,6 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         }
         
         backgroundColor = .systemFill
-        
-        Task {
-            await lottie.loadAnimation(from: try .named("thunderstorm"))
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -594,11 +591,13 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     func configure(_ title: String, forecast item: HourlyForecastEntity) {
         self.title.text = title
         desc.text = "\(item.time?.toStringWith(format: "MM/dd") ?? "") \(item.time?.to24HourString() ?? "") \(item.temperature2M?.description ?? "") \(item.weatherCondition?.description ?? "")"
-        
-//        if (!lottie.isAnimationPlaying) {
-//            
-//        }
-        lottie.play()
+        if let icon = item.weatherCondition?.icon {
+            Task {
+                await lottie.loadAnimation(from: try .named(icon))
+                lottie.loopMode = .loop
+                lottie.play()
+            }
+        }
     }
     
     // override func prepareForReuse() {

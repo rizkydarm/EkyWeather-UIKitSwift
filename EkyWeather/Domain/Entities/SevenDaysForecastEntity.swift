@@ -20,7 +20,7 @@ struct SevenDaysForecastEntity: Equatable {
         for i in 0..<timeArray.count {
             let entity = DailyForecastEntity(
                 time: timeArray[i],
-                weatherCode: weatherCodeArray[i],
+                weatherCondition: WeatherCondition.init(rawValue: weatherCodeArray[i]),
                 temperature2MMax: temperatureMaxArray[i],
                 temperature2MMin: temperatureMinArray[i]
             )
@@ -34,6 +34,6 @@ struct SevenDaysForecastEntity: Equatable {
 
 struct DailyForecastEntity: Equatable {
     let time: String?
-    let weatherCode: Int?
+    let weatherCondition: WeatherCondition?
     let temperature2MMax, temperature2MMin: Double?
 }

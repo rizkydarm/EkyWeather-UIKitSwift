@@ -95,6 +95,68 @@ enum WeatherCondition: Int {
             return "Heavy thunderstorm with hail"
         }
     }
+    
+    var icon: String {
+        switch self {
+        case .clearSky:
+            return "sun"
+        case .mainlyClear:
+            return "sun"
+        case .partlyCloudy:
+            return "suncloudy"
+        case .overcast:
+            return "suncloudy"
+        case .fog:
+            return "cloudy"
+        case .depositingRimeFog:
+            return "cloudy"
+        case .lightDrizzle:
+            return "thunder"
+        case .moderateDrizzle:
+            return "thunder"
+        case .denseDrizzle:
+            return "thunder"
+        case .lightFreezingDrizzle:
+            return "suncloudy"
+        case .denseFreezingDrizzle:
+            return "suncloudy"
+        case .slightRain:
+            return "sunrainy"
+        case .moderateRain:
+            return "sunrainy"
+        case .heavyRain:
+            return "thunderstorm"
+        case .lightFreezingRain:
+            return "sunrainy"
+        case .heavyFreezingRain:
+            return "sunrainy"
+        case .slightSnowFall:
+            return "snow"
+        case .moderateSnowFall:
+            return "snow"
+        case .heavySnowFall:
+            return "snow"
+        case .snowGrains:
+            return "snow"
+        case .slightRainShowers:
+            return "sunrainy"
+        case .moderateRainShowers:
+            return "sunrainy"
+        case .violentRainShowers:
+            return "sunrainy"
+        case .slightSnowShowers:
+            return "snow"
+        case .heavySnowShowers:
+            return "snow"
+        case .slightThunderstorm:
+            return "thunderstorm"
+        case .thunderstormWithHail:
+            return "thunderstorm"
+        case .heavyThunderstormWithHail:
+            return "thunderstorm"
+        }
+    }
+
 
     static func getWeatherDescription(from code: Int?) -> String? {
         if let condition = WeatherCondition(rawValue: code ?? -1) {
@@ -111,7 +173,8 @@ struct CurrentForecastEntity: Equatable {
     let time: String?
     let interval: Int?
     let temperature2M: Double?
-    let relativeHumidity2M, isDay, weatherCode: Int?
+    let relativeHumidity2M, isDay: Int?
+    let weatherCondition: WeatherCondition?
     let temperatureUnit: String?
     
     static func fromResponseModel(_ model: OpenMateoResponseModel) -> CurrentForecastEntity {
@@ -123,7 +186,7 @@ struct CurrentForecastEntity: Equatable {
             temperature2M: model.current?.temperature2M,
             relativeHumidity2M: model.current?.relativeHumidity2M,
             isDay: model.current?.isDay,
-            weatherCode: model.current?.weatherCode,
+            weatherCondition:  WeatherCondition.init(rawValue: model.current?.weatherCode ?? 0),
             temperatureUnit: model.currentUnits?.temperature2M
         )
     }

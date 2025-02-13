@@ -12,8 +12,6 @@
 		250D18312D3F649F00E60538 /* thunderstorm.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 250D18302D3F649F00E60538 /* thunderstorm.lottie */; };
 		254652B92D3C95F0008F6EFD /* Extension+UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254652B82D3C95EA008F6EFD /* Extension+UIStackView.swift */; };
 		254652BD2D3CA2A2008F6EFD /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254652BC2D3CA2A2008F6EFD /* LaunchViewController.swift */; };
-		254652C02D3CBCCD008F6EFD /* popcorn.json in Resources */ = {isa = PBXBuildFile; fileRef = 254652BF2D3CBCCD008F6EFD /* popcorn.json */; };
-		254652C22D3CBCD8008F6EFD /* clapperboard.json in Resources */ = {isa = PBXBuildFile; fileRef = 254652C12D3CBCD8008F6EFD /* clapperboard.json */; };
 		257315C92D537AE7005C0A46 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257315C82D537AE7005C0A46 /* LocationManager.swift */; };
 		25AFF47B2D4E6C8000C23E0F /* LogUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFF47A2D4E6C7900C23E0F /* LogUtility.swift */; };
 		25C0D6A42D3BED3000D69A44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C0D69C2D3BED3000D69A44 /* Assets.xcassets */; };
@@ -66,6 +64,12 @@
 		25E19BA92D3E1F7D00EE58E8 /* Extension+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E19BA82D3E1F7D00EE58E8 /* Extension+UIButton.swift */; };
 		25E6FB402D3CEED80064CD75 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E6FB3F2D3CEEBC0064CD75 /* Extension+UIView.swift */; };
 		25E6FB432D3CFEE30064CD75 /* ThemeUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E6FB422D3CFEDE0064CD75 /* ThemeUtility.swift */; };
+		25ECAAF42D5D9139008DA1EA /* cloudy.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 25ECAAEE2D5D9138008DA1EA /* cloudy.lottie */; };
+		25ECAAF52D5D9139008DA1EA /* suncloudy.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 25ECAAF12D5D9138008DA1EA /* suncloudy.lottie */; };
+		25ECAAF72D5D9139008DA1EA /* snow.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 25ECAAEF2D5D9138008DA1EA /* snow.lottie */; };
+		25ECAAF82D5D9139008DA1EA /* thunder.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 25ECAAF32D5D9138008DA1EA /* thunder.lottie */; };
+		25ECAAF92D5D9139008DA1EA /* sunrainy.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 25ECAAF22D5D9138008DA1EA /* sunrainy.lottie */; };
+		25ECAAFA2D5D9139008DA1EA /* sun.lottie in Resources */ = {isa = PBXBuildFile; fileRef = 25ECAAF02D5D9138008DA1EA /* sun.lottie */; };
 		4105049D069EBBC0DE169E19 /* Pods_EkyWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7488D11C2DD89A8163FE99FE /* Pods_EkyWeather.framework */; };
 		C36F253B3A95849218145A6D /* Pods_EkyWeatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15159AA7DBD2C6EFDCFE68B2 /* Pods_EkyWeatherTests.framework */; };
 		CEC8C18301BC630CC0A9111E /* Pods_EkyWeather_EkyWeatherUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 314DBBAC515E36CDC29925FC /* Pods_EkyWeather_EkyWeatherUITests.framework */; };
@@ -95,8 +99,6 @@
 		250D18302D3F649F00E60538 /* thunderstorm.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = thunderstorm.lottie; sourceTree = "<group>"; };
 		254652B82D3C95EA008F6EFD /* Extension+UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIStackView.swift"; sourceTree = "<group>"; };
 		254652BC2D3CA2A2008F6EFD /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
-		254652BF2D3CBCCD008F6EFD /* popcorn.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = popcorn.json; sourceTree = "<group>"; };
-		254652C12D3CBCD8008F6EFD /* clapperboard.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = clapperboard.json; sourceTree = "<group>"; };
 		257315C82D537AE7005C0A46 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		25AFF47A2D4E6C7900C23E0F /* LogUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogUtility.swift; sourceTree = "<group>"; };
 		25C0D63D2D3BE32600D69A44 /* EkyWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EkyWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,12 @@
 		25E19BA82D3E1F7D00EE58E8 /* Extension+UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIButton.swift"; sourceTree = "<group>"; };
 		25E6FB3F2D3CEEBC0064CD75 /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
 		25E6FB422D3CFEDE0064CD75 /* ThemeUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeUtility.swift; sourceTree = "<group>"; };
+		25ECAAEE2D5D9138008DA1EA /* cloudy.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = cloudy.lottie; sourceTree = "<group>"; };
+		25ECAAEF2D5D9138008DA1EA /* snow.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = snow.lottie; sourceTree = "<group>"; };
+		25ECAAF02D5D9138008DA1EA /* sun.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = sun.lottie; sourceTree = "<group>"; };
+		25ECAAF12D5D9138008DA1EA /* suncloudy.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = suncloudy.lottie; sourceTree = "<group>"; };
+		25ECAAF22D5D9138008DA1EA /* sunrainy.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = sunrainy.lottie; sourceTree = "<group>"; };
+		25ECAAF32D5D9138008DA1EA /* thunder.lottie */ = {isa = PBXFileReference; lastKnownFileType = file; path = thunder.lottie; sourceTree = "<group>"; };
 		314DBBAC515E36CDC29925FC /* Pods_EkyWeather_EkyWeatherUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EkyWeather_EkyWeatherUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7488D11C2DD89A8163FE99FE /* Pods_EkyWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EkyWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D04B9E38F1362DAFC65AB8 /* Pods-EkyWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EkyWeather.debug.xcconfig"; path = "Target Support Files/Pods-EkyWeather/Pods-EkyWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -194,8 +202,12 @@
 		254652BE2D3CBCBF008F6EFD /* LottieFiles */ = {
 			isa = PBXGroup;
 			children = (
-				254652C12D3CBCD8008F6EFD /* clapperboard.json */,
-				254652BF2D3CBCCD008F6EFD /* popcorn.json */,
+				25ECAAEE2D5D9138008DA1EA /* cloudy.lottie */,
+				25ECAAEF2D5D9138008DA1EA /* snow.lottie */,
+				25ECAAF02D5D9138008DA1EA /* sun.lottie */,
+				25ECAAF12D5D9138008DA1EA /* suncloudy.lottie */,
+				25ECAAF22D5D9138008DA1EA /* sunrainy.lottie */,
+				25ECAAF32D5D9138008DA1EA /* thunder.lottie */,
 				250D18302D3F649F00E60538 /* thunderstorm.lottie */,
 			);
 			path = LottieFiles;
@@ -587,11 +599,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				254652C22D3CBCD8008F6EFD /* clapperboard.json in Resources */,
 				250D18312D3F649F00E60538 /* thunderstorm.lottie in Resources */,
 				25C0D6A42D3BED3000D69A44 /* Assets.xcassets in Resources */,
-				254652C02D3CBCCD008F6EFD /* popcorn.json in Resources */,
 				25C0D6A62D3BED3000D69A44 /* LaunchScreen.storyboard in Resources */,
+				25ECAAF42D5D9139008DA1EA /* cloudy.lottie in Resources */,
+				25ECAAF52D5D9139008DA1EA /* suncloudy.lottie in Resources */,
+				25ECAAF72D5D9139008DA1EA /* snow.lottie in Resources */,
+				25ECAAF82D5D9139008DA1EA /* thunder.lottie in Resources */,
+				25ECAAF92D5D9139008DA1EA /* sunrainy.lottie in Resources */,
+				25ECAAFA2D5D9139008DA1EA /* sun.lottie in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
