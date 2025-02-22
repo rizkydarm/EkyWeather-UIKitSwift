@@ -25,20 +25,6 @@ jobs:
       with:
         xcode-version: 'latest-stable'
 
-    # Step 3: Setup Swift
-    - name: Setup Swift
-      uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
-      with:
-        swift-version: "5.9"
-
-    # Step 4: Show Swift version
-    - name: Show Swift Version
-      run: swift --version
-
-    # Step 5: Build the project
-    - name: Build Swift Package
-      run: swift build -v
-
     # Step 7: Build for iOS (if using Xcode project)
     - name: Build iOS App
       run: |
