@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '15.0'
+platform :ios, '15.6'
 
 target 'EkyWeather' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -11,7 +11,6 @@ target 'EkyWeather' do
   pod 'FloatingPanel', :git => 'https://github.com/scenee/FloatingPanel.git'
   pod 'RealmSwift', :git => 'https://github.com/realm/realm-swift.git'
   pod 'SwiftSVG', :git => 'https://github.com/mchoe/SwiftSVG'
-#  pod 'FTIndicator', :git => 'https://github.com/liufengting/FTIndicator'
   pod 'RouteComposer', :git => 'https://github.com/ekazaev/route-composer'
   pod 'SwiftyBeaver', :git => 'https://github.com/SwiftyBeaver/SwiftyBeaver'
   pod 'netfox', :git => 'https://github.com/kasketis/netfox'

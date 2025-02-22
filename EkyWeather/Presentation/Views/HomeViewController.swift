@@ -590,7 +590,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     
     func configure(_ title: String, forecast item: HourlyForecastEntity) {
         self.title.text = title
-        desc.text = "\(item.time?.toStringWith(format: "MM/dd") ?? "") \(item.time?.to24HourString() ?? "") \(item.temperature2M?.description ?? "") \(item.weatherCondition?.description ?? "")"
+        desc.text = item.weatherCondition?.description ?? ""
         if let icon = item.weatherCondition?.icon {
             Task {
                 await lottie.loadAnimation(from: try .named(icon))

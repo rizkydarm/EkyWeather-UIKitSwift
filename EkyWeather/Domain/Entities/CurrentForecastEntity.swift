@@ -107,15 +107,15 @@ enum WeatherCondition: Int {
         case .overcast:
             return "suncloudy"
         case .fog:
-            return "cloudy"
+            return "cloudywind"
         case .depositingRimeFog:
-            return "cloudy"
+            return "cloudywind"
         case .lightDrizzle:
-            return "thunder"
+            return "cloudy"
         case .moderateDrizzle:
-            return "thunder"
+            return "cloudy"
         case .denseDrizzle:
-            return "thunder"
+            return "cloudy"
         case .lightFreezingDrizzle:
             return "suncloudy"
         case .denseFreezingDrizzle:
@@ -129,7 +129,7 @@ enum WeatherCondition: Int {
         case .lightFreezingRain:
             return "sunrainy"
         case .heavyFreezingRain:
-            return "sunrainy"
+            return "thunderstorm"
         case .slightSnowFall:
             return "snow"
         case .moderateSnowFall:
