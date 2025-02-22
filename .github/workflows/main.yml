@@ -25,9 +25,14 @@ jobs:
       with:
         xcode-version: 'latest-stable'
 
+    - name: Install Apple Certificate
+      run: |
+        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+        sudo xcodebuild -runFirstLaunch
+
     # Step 7: Build for iOS (if using Xcode project)
     - name: Build iOS App
       run: |
-        xcodebuild clean build -scheme "${SCHEME_NAME}" -destination "platform=iOS Simulator,name=iPhone 14 Pro"
+        xcodebuild clean build -scheme "${SCHEME_NAME}" -destination "platform=iOS Simulator,OS=18.2,name=iPhone 15"
       env:
         SCHEME_NAME: EkyWeather
