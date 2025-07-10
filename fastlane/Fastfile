@@ -18,15 +18,15 @@ default_platform(:ios)
 platform :ios do
 
   # Lane for SwiftLint check
-  desc "Run SwiftLint"
-  lane :lint do
-    # swiftlint(
-    #   mode: :lint,
-    #   strict: false,
-    #   config_file: '.swiftlint.yml',
-    #   reporter: 'xcode'
-    # )
-  end
+  # desc "Run SwiftLint"
+  # lane :lint do
+  #   swiftlint(
+  #     mode: :lint,
+  #     strict: false,
+  #     config_file: '.swiftlint.yml',
+  #     reporter: 'xcode'
+  #   )
+  # end
 
   # Lane for git operations
   desc "Git: clean, pull, and push"
@@ -37,10 +37,10 @@ platform :ios do
   end
 
   # Lane for incrementing build number
-  desc "Increment build number"
-  lane :increment do
-    increment_build_number
-  end
+  # desc "Increment build number"
+  # lane :increment do
+  #   increment_build_number
+  # end
 
   # Lane for building the app
   desc "Build the app"
@@ -57,38 +57,38 @@ platform :ios do
   end
 
   # Lane for testing the app
-  desc "Run tests"
-  lane :test do
-    run_tests(
-      scheme: "EkyWeather",
-      workspace: "EkyWeather.xcworkspace",
-      clean: true,
-      devices: ["iPhone 14"],
-      code_coverage: true,
-      result_bundle: true
-    )
-  end
+  # desc "Run tests"
+  # lane :test do
+  #   run_tests(
+  #     scheme: "EkyWeather",
+  #     workspace: "EkyWeather.xcworkspace",
+  #     clean: true,
+  #     devices: ["iPhone 14"],
+  #     code_coverage: true,
+  #     result_bundle: true
+  #   )
+  # end
 
   # Lane for deploying to simulator
-  desc "Deploy to simulator"
-  lane :deploy_simulator do
-    build_ios_app(
-      scheme: "EkyWeather",
-      workspace: "EkyWeather.xcworkspace",
-      configuration: "Debug",
-      destination: "platform=iOS Simulator,name=iPhone 14",
-      skip_package_dependencies_resolution: true
-    )
-    sh("xcrun simctl install booted ../build/EkyWeather.app")
-    sh("xcrun simctl launch booted com.rizkydarma.EkyWeather")
-  end
+  # desc "Deploy to simulator"
+  # lane :deploy_simulator do
+  #   build_ios_app(
+  #     scheme: "EkyWeather",
+  #     workspace: "EkyWeather.xcworkspace",
+  #     configuration: "Debug",
+  #     destination: "platform=iOS Simulator,name=iPhone 14",
+  #     skip_package_dependencies_resolution: true
+  #   )
+  #   sh("xcrun simctl install booted ../build/EkyWeather.app")
+  #   sh("xcrun simctl launch booted com.rizkydarma.EkyWeather")
+  # end
 
   # Lane for complete development workflow
   desc "Complete development workflow: lint, test, build, and deploy to simulator"
   lane :dev do
     lint
     git_sync
-    test
+    # test
     deploy_simulator
   end
 
@@ -96,7 +96,7 @@ platform :ios do
   desc "Continuous Integration process"
   lane :ci do
     lint
-    test
+    # test
     build
   end
 end

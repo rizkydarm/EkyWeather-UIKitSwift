@@ -523,6 +523,7 @@ extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSo
         
         if (forecasts?.count ?? 0 >= hourlyTimeList.count) {
             let sameHour = forecasts?.first(where: {e in
+                print(e.weatherCondition?.description)
                 return e.time?.to24HourString() ?? "" == item
             })
             if let sameHour = sameHour {
@@ -591,6 +592,7 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     func configure(_ title: String, forecast item: HourlyForecastEntity) {
         self.title.text = title
         desc.text = item.weatherCondition?.description ?? ""
+        print(item.weatherCondition?.description ?? "-")
         if let icon = item.weatherCondition?.icon {
             Task {
                 await lottie.loadAnimation(from: try .named(icon))
