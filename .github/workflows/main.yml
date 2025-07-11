@@ -39,7 +39,7 @@ jobs:
           -workspace EkyWeather.xcworkspace \
           -scheme "EkyWeather" \
           -configuration Debug \
-          -destination 'platform=iOS Simulator,arch=arm64,id=926C8A9B-E5BF-423C-ABE6-09394FF89679' \
+          -destination 'platform=iOS Simulator,id=926C8A9B-E5BF-423C-ABE6-09394FF89679,OS=18.2,name=iPhone 16 Pro Max' \
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
           | xcbeautify
