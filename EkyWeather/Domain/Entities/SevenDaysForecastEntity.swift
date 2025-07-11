@@ -17,12 +17,12 @@ struct SevenDaysForecastEntity: Equatable {
         let weatherCodeArray = model.daily?.weatherCode ?? []
         
         var dailyArray: [DailyForecastEntity] = []
-        for i in 0..<timeArray.count {
+        for index in 0..<timeArray.count {
             let entity = DailyForecastEntity(
-                time: timeArray[i],
-                weatherCondition: WeatherCondition.init(rawValue: weatherCodeArray[i]),
-                temperature2MMax: temperatureMaxArray[i],
-                temperature2MMin: temperatureMinArray[i]
+                time: timeArray[index],
+                weatherCondition: WeatherCondition.init(rawValue: weatherCodeArray[index]),
+                temperature2MMax: temperatureMaxArray[index],
+                temperature2MMin: temperatureMinArray[index]
             )
             dailyArray.append(entity)
         }

@@ -131,9 +131,9 @@ class HomeViewController: UIViewController {
             .systemGray
         ]
         
-        for i in 0..<colors.count {
+        for index in 0..<colors.count {
             let box = UIView()
-            box.backgroundColor = colors[i]
+            box.backgroundColor = colors[index]
             contentView.addSubview(box)
             boxes.append(box)
         }
@@ -522,9 +522,9 @@ extension MainTodayContentView: UICollectionViewDelegate, UICollectionViewDataSo
         let forecasts = homeViewModel.oneDayForecast?.hourlyForecast
         
         if (forecasts?.count ?? 0 >= hourlyTimeList.count) {
-            let sameHour = forecasts?.first(where: {e in
-                print(e.weatherCondition?.description)
-                return e.time?.to24HourString() ?? "" == item
+            let sameHour = forecasts?.first(where: {element in
+                print(element.weatherCondition?.description)
+                return element.time?.to24HourString() ?? "" == item
             })
             if let sameHour = sameHour {
                 cell.configure(item, forecast: sameHour)

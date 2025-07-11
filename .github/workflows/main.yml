@@ -30,16 +30,13 @@ jobs:
 
     - name: Build iOS App
       run: |
-        xcodebuild clean build \
+        SKIP_LINT=1 \
+          xcodebuild clean build \
+          ARCHS\=arm64 VALID_ARCHS\=arm64 ONLY_ACTIVE_ARCH\=NO \
           -workspace EkyWeather.xcworkspace \
           -scheme "EkyWeather" \
           -configuration Debug \
-          -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 15,OS=18.1' \
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGN_IDENTITY="" \
-          ONLY_ACTIVE_ARCH=NO \
-          | xcpretty && exit ${PIPESTATUS[0]}
-      env:
-        SCHEME_NAME: EkyWeather
+          | xcpretty

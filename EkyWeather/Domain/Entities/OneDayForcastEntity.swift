@@ -22,13 +22,13 @@ struct OneDayForecastEntity: Equatable {
         let len = min(time.count, temperature2M.count, relativeHumidity2M.count, apparentTemperature.count, weatherCode.count)
         
         var hourlyArray: [HourlyForecastEntity] = []
-        for i in 0..<len {
+        for index in 0..<len {
             let entity = HourlyForecastEntity(
-                time: Date.tryParse(string: time[i], dateFormats: ["yyyy-MM-dd'T'HH:mm"]),
-                temperature2M: temperature2M[i],
-                relativeHumidity2M: relativeHumidity2M[i],
-                apparentTemperature: apparentTemperature[i],
-                weatherCondition:  WeatherCondition.init(rawValue: weatherCode[i]),
+                time: Date.tryParse(string: time[index], dateFormats: ["yyyy-MM-dd'T'HH:mm"]),
+                temperature2M: temperature2M[index],
+                relativeHumidity2M: relativeHumidity2M[index],
+                apparentTemperature: apparentTemperature[index],
+                weatherCondition:  WeatherCondition.init(rawValue: weatherCode[index]),
                 temperatureUnit: model.hourlyUnits?.temperature2M
             )
             hourlyArray.append(entity)

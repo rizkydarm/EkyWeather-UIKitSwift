@@ -27,8 +27,8 @@ struct SizeUtility {
     static func resizeView(_ view: UIView, basedOn referenceFrame: CGRect) {
         let width = resizeDimension(referenceFrame.width)
         let height = resizeDimension(referenceFrame.height)
-        let x = resizeDimension(referenceFrame.origin.x)
-        let y = resizeDimension(referenceFrame.origin.y)
-        view.frame = CGRect(x: x, y: y, width: width, height: height)
+        let coordinateX = resizeDimension(referenceFrame.origin.x)
+        let coordinateY = resizeDimension(referenceFrame.origin.y)
+        view.frame = CGRect(x: coordinateX, y: coordinateY, width: width, height: height)
     }
 }
