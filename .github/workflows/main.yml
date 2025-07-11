@@ -23,20 +23,23 @@ jobs:
       with:
         xcode-version: 'latest-stable'
 
-    - name: Install Apple Certificate
+    - name: Install CocoaPods
       run: |
-        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-        sudo xcodebuild -runFirstLaunch
+        brew install cocoapods
+
+    - name: Install Pods
+      run: |
+        pod install --clean-install
 
     - name: Build iOS App
       run: |
         SKIP_LINT=1 \
-          xcodebuild clean build \
+          xcodebuild build \
           ARCHS\=arm64 VALID_ARCHS\=arm64 ONLY_ACTIVE_ARCH\=NO \
           -workspace EkyWeather.xcworkspace \
           -scheme "EkyWeather" \
           -configuration Debug \
+          -destination 'platform=iOS Simulator,arch=arm64,id=B4DF6350-B8FA-474F-A83A-1FC397FE2076' \
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGN_IDENTITY="" \
-          | xcpretty
+          | xcbeautify
