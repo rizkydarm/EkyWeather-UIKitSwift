@@ -39,7 +39,7 @@ jobs:
           -workspace EkyWeather.xcworkspace \
           -scheme "EkyWeather" \
           -configuration Debug \
-          -destination 'platform=iOS Simulator,arch=arm64,id=B4DF6350-B8FA-474F-A83A-1FC397FE2076' \
+          -destination 'platform=iOS Simulator,arch=arm64,id=926C8A9B-E5BF-423C-ABE6-09394FF89679' \
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
           | xcbeautify
